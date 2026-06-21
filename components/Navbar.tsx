@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Swords, Puzzle, Microscope } from "lucide-react";
+import { LayoutDashboard, Swords, Puzzle, BookOpen, Microscope } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
+  { href: "/home", label: "Home", icon: LayoutDashboard },
   { href: "/play", label: "Play", icon: Swords },
   { href: "/puzzles", label: "Puzzles", icon: Puzzle },
+  { href: "/openings", label: "Openings", icon: BookOpen },
   { href: "/analysis", label: "Analysis", icon: Microscope },
 ];
 

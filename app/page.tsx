@@ -45,17 +45,17 @@ export default function HomePage() {
         </p>
         <div className="mt-9 flex flex-wrap gap-3">
           <Link
-            href="/play"
+            href="/home"
             className="inline-flex items-center gap-2 border border-slate-900 bg-forest px-6 py-3 text-sm font-semibold text-parchment shadow-hard transition-colors hover:bg-forest-hover focus-hard dark:border-slate-100"
           >
-            Start a game
+            Enter the studio
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            href="/puzzles"
+            href="/play"
             className="inline-flex items-center gap-2 border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-800 transition-colors hover:border-slate-900 focus-hard dark:border-slate-700 dark:text-slate-200 dark:hover:border-slate-100"
           >
-            Solve a puzzle
+            Start a game
           </Link>
         </div>
       </section>

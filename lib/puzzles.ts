@@ -2,6 +2,8 @@
 // correct by scripts/build-puzzles.mjs (run against chess.js). All current
 // puzzles are mate-in-one across a spread of classic mating motifs.
 
+import { Chess } from "chess.js";
+
 export type PuzzleGoal = "mate";
 
 export interface Puzzle {
@@ -100,3 +102,53 @@ export const PUZZLES: Puzzle[] = [
     prompt: "White to move. The king has boxed itself in behind its own pieces. Mate in one.",
   },
 ];
+
+/** "white" | "black" — which side the solver plays in a puzzle. */
+export function puzzleSide(p: Puzzle): "white" | "black" {
+  return p.fen.split(" ")[1] === "b" ? "black" : "white";
+}
+
+/**
+ * Judge a candidate move against a puzzle. "illegal" means it wasn't even a
+ * legal move; "wrong" means legal but not the solution; "correct" solves it.
+ */
+export function checkPuzzleMove(
+  p: Puzzle,
+  from: string,
+  to: string,
+  promotion?: string
+): "correct" | "wrong" | "illegal" {
+  const g = new Chess(p.fen);
+  let mv;
+  try {
+    mv = g.move({ from, to, promotion });
+  } catch {
+    return "illegal";
+  }
+  if (!mv) return "illegal";
+  const ok = p.goal === "mate" ? g.isCheckmate() : mv.san === p.solution[0];
+  return ok ? "correct" : "wrong";
+}
+
+/** Deterministic puzzle of the day, stable for a given calendar date. */
+export function dailyPuzzle(date = new Date()): Puzzle {
+  const dayIndex = Math.floor(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000
+  );
+  return PUZZLES[dayIndex % PUZZLES.length];
+}
+
+/** A reshuffled, repeating queue of puzzles for the timed/streak modes. */
+export function puzzleQueue(length: number, seed = Date.now()): Puzzle[] {
+  const pool = [...PUZZLES];
+  // Fisher-Yates with a tiny seeded PRNG so a run is reproducible if needed.
+  let s = seed % 2147483647;
+  const rand = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const out: Puzzle[] = [];
+  for (let i = 0; i < length; i++) out.push(pool[i % pool.length]);
+  return out;
+}

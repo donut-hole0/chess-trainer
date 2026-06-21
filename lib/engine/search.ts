@@ -111,3 +111,26 @@ export function evaluatePositionCp(game: Chess, depth = 2): number {
   const bestForMover = ranked[0].score;
   return game.turn() === "w" ? bestForMover : -bestForMover;
 }
+
+/**
+ * Evaluate every node of a SAN line, White's perspective. Returns one score per
+ * position including the start, so the result has length `sans.length + 1` —
+ * exactly the shape the evaluation graph plots.
+ */
+export function evaluateLine(
+  sans: string[],
+  startFen?: string,
+  depth = 2
+): number[] {
+  const game = startFen ? new Chess(startFen) : new Chess();
+  const out: number[] = [evaluatePositionCp(game, depth)];
+  for (const san of sans) {
+    try {
+      game.move(san);
+    } catch {
+      break;
+    }
+    out.push(evaluatePositionCp(game, depth));
+  }
+  return out;
+}
