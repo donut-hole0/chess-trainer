@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chessigma — Train. Play. Improve.</title>
+  <meta name="description" content="A combined chess.com + chessigma training dashboard. Play bots, solve puzzles, analyze games — all in one dependency-free static site." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♜</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="./static/styles.css" />
+</head>
+<body>
+  <div id="app"><div class="boot">Loading Chessigma…</div></div>
+
+  <!-- dependency-free; loads in order: engine -> bot -> data -> board -> app -->
+  <script src="./static/js/chess.js"></script>
+  <script src="./static/js/bot.js"></script>
+  <script src="./static/js/data.js"></script>
+  <script src="./static/js/board.js"></script>
+  <script src="./static/js/app.js"></script>
+</body>
+</html>
